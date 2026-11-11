@@ -1,0 +1,170 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.3.0
+Date: 2026-11-11
+  Major Features:
+    - First public release: a tornado gun that fires tornadoes which grow out of a swirling dust ball, sweep up enemies, spin them through the funnel and drop them hard.
+    - Unlocked by the new Tornado gun technology, after Military 3.
+  Balancing:
+    - Default max distance lowered to 30 tiles (was 50), and gun range to match.
+    - Swirl damage back on by default: 25 per second on average while enemies are lifted.
+    - Tornado gun recipe: 3 engine units, 10 steel plate, 10 copper plate and a barrel.
+    - Tornado charge recipe: 5 copper plate, 2 stone, a barrel and 100 steam; crafted in an assembling machine 2 or 3.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.12
+Date: 2026-11-11
+  Graphics:
+    - Tornado sprite sheets trimmed to their content, with the soft back half at half resolution and the busy layers as 256-colour PNGs: the mod is about 5x smaller to download and uses about half the video memory, with no visible change.
+    - The funnel grows at a steady rate, starting almost as soon as it's fired.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.11
+Date: 2026-11-11
+  Bugfixes:
+    - Fixed the dust ring (and the dense back of the funnel) being nearly invisible on about half of tornadoes: brighter shade variations produced colour values above 1, which the game reads as 0-255. Shade variation now only darkens, and tints are capped.
+    - Dust ring back on its ground layer under enemies.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.10
+Date: 2026-11-11
+  Bugfixes:
+    - Moved the dust ring to a higher drawing layer, just under the back of the funnel, to stop it going missing on some tornadoes.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.9
+Date: 2026-11-11
+  Graphics:
+    - The funnel grows at a steady (linear) rate, starting almost as soon as it's fired.
+  Bugfixes:
+    - Fixed the dust ring missing on mirrored tornadoes; it now spins in reverse instead of being flipped.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.8
+Date: 2026-11-11
+  Graphics:
+    - The funnel starts growing 0.5 seconds after firing and reaches full size 1.5 seconds later.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.7
+Date: 2026-11-11
+  Graphics:
+    - A soft haze of tan dust churns around the foot of the funnel, taking over from the launch dust ball as the funnel grows. It thins as it spreads and sits under the debris ring.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.6
+Date: 2026-11-11
+  Graphics:
+    - About half of tornadoes are mirrored and spin the other way.
+    - The funnel grows over 2.5 seconds after clearing the barrel (time-based, so a tornado that stops early still grows fully).
+  Bugfixes:
+    - Fixed the dust ring disappearing after the tornado went off-screen.
+    - Swirling enemies and the dust ball now spin the same way as the funnel.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.5
+Date: 2026-11-11
+  Graphics:
+    - Each tornado varies a little: random starting point in its spin, spin speed (+/-12%), size (+/-10%) and shade (+/-6%), so volleys don't look identical. Swirling enemies follow each tornado's size.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.4
+Date: 2026-11-11
+  Bugfixes:
+    - Smoothed the click when the tornado collapses: the looping roar now fades out as it drifts away instead of cutting off, and the closing sound fades in to meet it.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.3
+Date: 2026-11-11
+  Graphics:
+    - Smaller, tighter dust ball on firing, so it no longer hides the player.
+  Changes:
+    - The tornado starts 1 tile in front of the shooter, at the gun muzzle.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.2
+Date: 2026-11-11
+  Features:
+    - Tornado sounds: a rising swell when fired, a seamless looping roar that travels with the tornado, and a dying wind when it collapses.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.1
+Date: 2026-11-11
+  Graphics:
+    - The tornado leaves the gun as a swirling ball of tan dust and grit; the funnel only appears once it clears the barrel, then grows quickly out of the dust.
+    - Tornado graphics are smaller and scale with the funnel radius setting.
+  Balancing:
+    - Funnel radius now defaults to 1.5 tiles at the gun and 3.5 at full size (was 2 and 5), and lift to 4.5 tiles (was 6), so enemies stay on the smaller funnel.
+---------------------------------------------------------------------------------------------------
+Version: 0.2.0
+Date: 2026-11-11
+  Graphics:
+    - Real tornado graphics replace the placeholder circles: a dense back half drawn under airborne enemies, a wispy front half with glowing streaks drawn over them, a swirling dust ring with tumbling rocks, and a cast shadow.
+    - The funnel and dust grow from the gun as the tornado travels.
+  Changes:
+    - Swirling enemies follow the funnel's taper.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.10
+Date: 2026-11-11
+  Bugfixes:
+    - Airborne enemies are drawn in the air layer, so they pass in front of trees and buildings instead of behind them.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.9
+Date: 2026-11-11
+  Changes:
+    - Orbit radius now follows a tapered funnel shape: low enemies whip around a skinny tip, high ones circle the wide top.
+    - Spin speed is capped at about 2.4 turns per second so the tip doesn't jitter.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.8
+Date: 2026-11-11
+  Features:
+    - Caught enemies rise to different heights (0.35x to 1.3x the lift setting), so they're spread up through the tornado.
+    - Caught enemies are swapped for a shadowless airborne twin, so only the mod's ground shadow shows; they're swapped back with the same health when dropped.
+  Graphics:
+    - Ground shadows shrink and fade as enemies rise higher.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.7
+Date: 2026-11-11
+  Balancing:
+    - Swirl damage now defaults to off (0 per second) while the swirl motion is tuned.
+    - Doubled the default lift height from 3 to 6 tiles (setting maximum raised to 20).
+---------------------------------------------------------------------------------------------------
+Version: 0.1.6
+Date: 2026-11-11
+  Features:
+    - Swirling enemies take damage over time (25 per second on average), each at a slightly different rate so they die off one by one.
+    - Swirling enemies cast a shadow on the ground beneath them, which shrinks as they rise.
+  Changes:
+    - The tornado spawns on the shooter, so it grabs biters chasing you.
+    - Starts smaller and grows: dust cloud 3 to 12 tiles, funnel 2 to 5 tiles.
+    - Added settings for the starting dust and funnel radius and for swirl damage.
+    - Updating the mod clears any tornado still in flight.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.5
+Date: 2026-11-11
+  Changes:
+    - The dust cloud is now the grab zone: 6 tiles at the muzzle, growing to 12 tiles.
+    - Grabbed enemies are dragged in and swirl around the edge of the funnel (3 tiles at the muzzle, growing to 6).
+    - Swirl speed now slows with distance, so enemies out in the dust drift around while those at the funnel whip around fast.
+    - Replaced the catch radius setting with separate dust cloud radius and funnel radius settings.
+  Bugfixes:
+    - Fixed caught enemies orbiting less than a tile from the center.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.4
+Date: 2026-11-11
+  Balancing:
+    - Doubled the default max distance from 25 to 50 tiles (setting maximum raised to 200).
+    - Gun range raised to 50 to match.
+  Changes:
+    - The tornado catches enemies from the moment it spawns, starting at half its full catch radius, so biters right on top of the player get swept up.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.3
+Date: 2026-11-11
+  Balancing:
+    - Doubled the default catch radius from 3 to 6 tiles (setting maximum raised to 30).
+---------------------------------------------------------------------------------------------------
+Version: 0.1.2
+Date: 2026-11-11
+  Graphics:
+    - Tornado charge icon changed to a patina copper canister.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+Date: 2026-11-11
+  Graphics:
+    - Tornado charge now uses its own canister icon.
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 2026-11-11
+  Major Features:
+    - Initial test release: tornado gun and tornado charges.
+    - Tornado leaves the muzzle as a dust ball, grows out of it, catches enemies, spins them, then drops them for fall damage.
+    - Map settings for distance, size, capacity, speed, hold time, fall damage, catch radius and lift.
+  Graphics:
+    - Tornado drawn as placeholder circles until the funnel and debris animations are made.

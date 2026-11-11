@@ -1,0 +1,10 @@
+{
+  "name": "WePlayTornadoGun",
+  "version": "0.3.0",
+  "title": "WePlay: Tornado Gun",
+  "author": "afewvowels",
+  "homepage": "https://github.com/<your-github>/WePlayTornadoGun",
+  "description": "Fire a tornado that rises out of a dust cloud, sweeps up enemies, spins them around, and drops them hard.",
+  "factorio_version": "2.1",
+  "dependencies": ["base >= 2.1"]
+}
