@@ -33,6 +33,11 @@ for name, unit in pairs(data.raw["unit"]) do
     twin.autoplace = nil
     twin.water_reflection = nil
     twin.render_layer = "air-object"   -- drawn above trees and buildings while airborne
+    -- No collisions while airborne. Lifting works by teleporting every tick,
+    -- and teleport checks collisions, so big biters (big collision boxes)
+    -- kept getting blocked by trees, rocks and each other and stayed low.
+    twin.collision_box = {{-0.1, -0.1}, {0.1, 0.1}}
+    twin.collision_mask = {layers = {}}
     twin.run_animation = strip_shadows(twin.run_animation)
     if twin.attack_parameters and twin.attack_parameters.animation then
       twin.attack_parameters.animation = strip_shadows(twin.attack_parameters.animation)
@@ -41,3 +46,20 @@ for name, unit in pairs(data.raw["unit"]) do
   end
 end
 data:extend(twins)
+
+
+-- Research: every technology that boosts bullet damage (Physical projectile
+-- damage, including the infinite levels and modded versions) gives the
+-- tornado charge the same bonus. control.lua applies it to the tornado's
+-- scripted swirl and fall damage.
+for _, tech in pairs(data.raw["technology"]) do
+  local added = {}
+  for _, effect in pairs(tech.effects or {}) do
+    if effect.type == "ammo-damage" and effect.ammo_category == "bullet" then
+      added[#added + 1] = {type = "ammo-damage", ammo_category = "wp-tornado", modifier = effect.modifier}
+    end
+  end
+  for _, effect in ipairs(added) do
+    table.insert(tech.effects, effect)
+  end
+end

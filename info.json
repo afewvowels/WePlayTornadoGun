@@ -1,10 +1,12 @@
 {
   "name": "WePlayTornadoGun",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "title": "WePlay: Tornado Gun",
   "author": "afewvowels",
-  "homepage": "https://github.com/<your-github>/WePlayTornadoGun",
-  "description": "Fire a tornado that rises out of a dust cloud, sweeps up enemies, spins them around, and drops them hard.",
+  "homepage": "https://github.com/afewvowels/WePlayTornadoGun",
+  "description": "A tornado-firing hand cannon: blast a twister that rises out of dust, sweeps up enemies, spins them, and drops them hard. Great gun for crowd control and breaking up biter swarms.",
   "factorio_version": "2.1",
-  "dependencies": ["base >= 2.1"]
+  "dependencies": [
+    "base >= 2.1"
+  ]
 }

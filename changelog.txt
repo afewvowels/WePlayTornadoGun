@@ -1,4 +1,18 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.3.1
+Date: 2026-11-18
+  Features:
+    - New "Tornado size" map setting from 1 to 10, each step a third bigger (1 = 100%, 2 = 133%, 10 = 400%), defaulting to 2. It scales the tornado, how wide enemies orbit and how high they're lifted; the dust cloud grab radius keeps its own setting.
+    - Physical projectile damage research now boosts the tornado's swirl and fall damage, including the infinite levels.
+  Balancing:
+    - Swirl damage is now physical damage, so enemies' physical resistances apply, the same as against bullets. Fall damage stays impact damage.
+  Bugfixes:
+    - Big biters now ride all the way up the funnel. Lifted enemies no longer collide with anything, so trees, rocks and other enemies can't hold them near the ground.
+  Optimizations:
+    - Map settings are cached instead of read several times per swirling enemy every tick.
+  Changes:
+    - New mod description.
+---------------------------------------------------------------------------------------------------
 Version: 0.3.0
 Date: 2026-11-11
   Major Features:

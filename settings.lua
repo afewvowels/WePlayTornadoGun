@@ -22,6 +22,8 @@ data:extend{
    default_value = 3.5, minimum_value = 0.5, maximum_value = 30, order = "g4"},
   {type = "double-setting", name = "wp-tornado-swirl-dps", setting_type = "runtime-global",
    default_value = 25, minimum_value = 0, maximum_value = 10000, order = "f0"},
+  {type = "int-setting", name = "wp-tornado-size", setting_type = "runtime-global",
+   default_value = 2, minimum_value = 1, maximum_value = 10, order = "g0"},
   {type = "double-setting", name = "wp-tornado-lift", setting_type = "runtime-global",
    default_value = 4.5, minimum_value = 0, maximum_value = 20, order = "h"},
 }

@@ -67,7 +67,34 @@ local function new_variation()
   }
 end
 
-local function cfg(name) return settings.global[name].value end
+-- Map settings are read many times per tick (several per swirling enemy), so
+-- they're cached and the cache is cleared whenever a map setting changes.
+local cfg_cache = {}
+local function cfg(name)
+  local v = cfg_cache[name]
+  if v == nil then
+    v = settings.global[name].value
+    cfg_cache[name] = v
+  end
+  return v
+end
+script.on_event(defines.events.on_runtime_mod_setting_changed, function() cfg_cache = {} end)
+
+-- Tornado size setting: steps 1-10, a third bigger each step (1 = 100%,
+-- 2 = 133%, 4 = 200%, 10 = 400%). Scales the art,
+-- the funnel/orbit radius, the lift height and the dust ball, but not the
+-- dust cloud grab zone.
+-- Damage bonus from research: the tornado charge's ammo category gets the same
+-- bonuses as bullets (see data-final-fixes.lua). Script damage ignores force
+-- bonuses, so it's applied here.
+local function damage_bonus(force)
+  local ok, m = pcall(force.get_ammo_damage_modifier, "wp-tornado")
+  return 1 + ((ok and m) or 0)
+end
+
+local function size_setting()
+  return 1 + (cfg("wp-tornado-size") - 1) / 3
+end
 
 local CATCH_EVERY = 6         -- ticks between catch scans
 local START_SOUND_TICKS = 192 -- length of tornado-start.ogg (3.2 s); the loop takes over here
@@ -99,7 +126,7 @@ local function lerp(a, b, s) return a + (b - a) * s end
 -- Sizes in tiles.
 local function funnel_radius(t)
   return lerp(cfg("wp-tornado-funnel-radius-start"), cfg("wp-tornado-funnel-radius"), t.fg)
-         * t.fade * t.var.size
+         * t.fade * t.var.size * t.size_mult
 end
 local function dust_radius(t)
   return lerp(cfg("wp-tornado-dust-radius-start"), cfg("wp-tornado-dust-radius"), t.dg) * t.fade
@@ -183,7 +210,7 @@ local ART_TOP_R = 5.0         -- funnel top radius the art was rendered at (FUNN
 -- Art size multiplier: follows the funnel radius setting, so shrinking that
 -- setting shrinks the art and the enemy orbit together.
 local function art_size(t)
-  return t.vg * cfg("wp-tornado-funnel-radius") / ART_TOP_R * t.fade * t.var.size
+  return t.vg * cfg("wp-tornado-funnel-radius") / ART_TOP_R * t.fade * t.var.size * t.size_mult
 end
 
 -- Funnel shape while growing: it shoots up first (height) and widens a beat
@@ -213,13 +240,13 @@ local function emit_dust(t, tick)
   if math.random() > strength then return end
   for k = 0, 0 do   -- one puff per tick
     local a = tick * 0.55 * t.var.mirror * SPIN_DIR + k * math.pi + math.random() * 0.4
-    local r = DUST_BALL_R * (0.4 + 0.6 * math.random())
+    local r = DUST_BALL_R * t.size_mult * (0.4 + 0.6 * math.random())
     local p = {x = t.pos.x + math.cos(a) * r, y = t.pos.y + math.sin(a) * r * 0.5 - 0.3}
     pcall(t.surface.create_trivial_smoke, {name = "wp-tornado-dust", position = p})
   end
   if tick % 2 == 0 then
     local a = tick * 0.55 * t.var.mirror * SPIN_DIR + math.random() * math.pi * 2
-    local r = DUST_BALL_R * (0.6 + 0.6 * math.random())
+    local r = DUST_BALL_R * t.size_mult * (0.6 + 0.6 * math.random())
     local spin = (0.12 + 0.06 * math.random()) * t.var.mirror * SPIN_DIR
     pcall(t.surface.create_particle, {
       name = "wp-tornado-grit",
@@ -422,6 +449,7 @@ local function spawn(surface, force, from, to)
     vg = 0,      -- art growth 0..1 (starts after the barrel, time-based)
     age = 0,
     var = new_variation(),
+    size_mult = size_setting(),   -- fixed per tornado, so changing the setting doesn't resize ones in flight
     victims = {},
   }
   t.sound_at = game.tick + START_SOUND_TICKS
@@ -488,8 +516,8 @@ end
 -- the shadow stays on the ground beneath to sell the height.
 local function swirl(t, tick, collapsing)
   local top = math.max(0.5, ORBIT_AT * funnel_radius(t))   -- orbit radius at the top, in tiles
-  local max_lift = cfg("wp-tornado-lift") * t.fg * t.var.size
-  local top_lift = math.max(0.01, cfg("wp-tornado-lift") * LIFT_MULT_MAX * t.var.size)
+  local max_lift = cfg("wp-tornado-lift") * t.fg * t.var.size * t.size_mult
+  local top_lift = math.max(0.01, cfg("wp-tornado-lift") * LIFT_MULT_MAX * t.var.size * t.size_mult)
   local dps = cfg("wp-tornado-swirl-dps")
   for i = #t.victims, 1, -1 do
     local v = t.victims[i]
@@ -521,7 +549,8 @@ local function swirl(t, tick, collapsing)
         v.shadow.color = {0, 0, 0, math.max(0.15, 0.45 - 0.025 * v.lift)}
       end
       if not collapsing and dps > 0 and (tick + v.phase) % DAMAGE_EVERY == 0 then
-        e.damage(dps * v.dmg_mult * DAMAGE_EVERY / 60, t.force, "impact")
+        -- physical: being pelted with debris; boosted by physical projectile research
+        e.damage(dps * v.dmg_mult * DAMAGE_EVERY / 60 * damage_bonus(t.force), t.force, "physical")
       end
     end
     if not e.valid then   -- died to swirl damage or anything else
@@ -543,7 +572,7 @@ local function drop_all(t)
       e = swap(e, false, ground)
       e.teleport(ground)
       set_frozen(e, false)
-      if dmg > 0 then e.damage(dmg, t.force, "impact") end
+      if dmg > 0 then e.damage(dmg * damage_bonus(t.force), t.force, "impact") end
     end
   end
   t.victims = {}
